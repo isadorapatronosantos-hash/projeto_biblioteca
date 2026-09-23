@@ -79,7 +79,8 @@ label {
 }
 
 
-input {
+input,
+select {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
