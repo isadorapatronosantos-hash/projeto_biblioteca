@@ -444,14 +444,74 @@ def listar_bibliotecarios():
 def formulario_bibliotecario():
     return render_template("bibliotecario_form.html")
 
-@app.route("/bibliotecarios/cadastrar", methods=["POST"])
-def cadastrar_bibliotecario():
+
+
+# Rota para devolução de livro
+
+@app.route("/emprestimos/devolver/<int:id_emprestimo>")
+def devolver_livro(id_emprestimo):
     try:
-        nome = request.form["nome"]
-        email = request.form["email"]
 
         conexao = conectar()
-        cursor = conexao.cursor()
+
+        cursor = conexao.cursor(dictionary=True)
+
+
+
+        cursor.execute("""
+
+            SELECT id_livro
+
+            FROM emprestimo
+
+            WHERE id_emprestimo = %s
+
+        """, (id_emprestimo,))
+
+
+
+        emprestimo = cursor.fetchone()
+
+
+
+        if emprestimo:
+
+
+
+            id_livro = emprestimo["id_livro"]
+
+
+
+            cursor.execute("""
+
+                UPDATE emprestimo
+
+                SET
+
+                    data_devolucao = CURDATE(),
+
+                    status = 'Devolvido'
+
+                WHERE id_emprestimo = %s
+
+            """, (id_emprestimo,))
+
+
+
+            cursor.execute("""
+
+                UPDATE livro
+
+                SET status = 'Disponível'
+
+                WHERE id_livro = %s
+
+            """, (id_livro,))
+
+
+
+            conexao.commit()
+
 
         sql = """
             INSERT INTO bibliotecario (nome, email)
@@ -473,45 +533,6 @@ def cadastrar_bibliotecario():
     
     # Rotas para empréstimos
 @app.route("/emprestimos")
-def listar_emprestimos():
-    try:
-        conexao = conectar()
-        cursor = conexao.cursor(dictionary=True)
-
-
-        sql = """
-            SELECT
-                e.id_emprestimo,
-                a.nome AS aluno,
-                l.titulo AS livro,
-                b.nome AS bibliotecario,
-                e.data_emprestimo,
-                e.data_prevista_devolucao,
-                e.data_devolucao,
-                e.status
-            FROM emprestimo e
-            INNER JOIN aluno a ON e.id_aluno = a.id_aluno
-            INNER JOIN livro l ON e.id_livro = l.id_livro
-            INNER JOIN bibliotecario b ON e.id_bibliotecario = b.id_bibliotecario
-            ORDER BY e.id_emprestimo DESC
-        """
-
-
-        cursor.execute(sql)
-        emprestimos = cursor.fetchall()
-
-
-        cursor.close()
-        conexao.close()
-
-
-        return render_template("emprestimos.html", emprestimos=emprestimos)
-
-
-    except Exception as erro:
-        return f"Erro ao listar empréstimos: {erro}"
-
-
 
 
 @app.route("/emprestimos/novo")
@@ -610,9 +631,7 @@ def cadastrar_emprestimo():
     except Exception as erro:
         return f"Erro ao cadastrar empréstimo: {erro}"
 
-# Rota para devolução de livro
-@app.route("/emprestimos/devolver/<int:id_emprestimo>")
-def devolver_livro(id_emprestimo):
+
 
 
     try:
