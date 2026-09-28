@@ -1,95 +1,166 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    background-color: #eaf6ff;
+    background-color: #f2f2f2;
+    color: #333;
 }
 
- header {
-    background-color: #5dade2;
+
+header {
+    background-color: #2c3e50;
     color: white;
+}
+
+
+.topo {
     padding: 20px;
 }
 
- header h1 {
+
+.topo h1 {
     margin: 0;
 }
 
- nav {
-    margin-top: 10px;
+
+.topo p {
+    margin: 5px 0 0 0;
 }
 
- nav a {
+
+nav {
+    background-color: #1a252f;
+    padding: 12px 20px;
+}
+
+
+nav a {
     color: white;
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 18px;
+    font-weight: bold;
 }
 
- nav a:hover {
+
+nav a:hover {
     text-decoration: underline;
 }
 
- main {
+
+main {
     width: 90%;
-    margin: 20px auto;
+    margin: 25px auto;
     background-color: white;
-    padding: 20px;
-    border: 1px solid #b9dcf5;
+    padding: 25px;
+    border: 1px solid #ddd;
+    min-height: 400px;
 }
 
- h2 {
-    color: #3498db;
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-top: 30px;
 }
 
- table {
+
+h2 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+
+h3 {
+    color: #34495e;
+}
+
+
+table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
+    margin-top: 15px;
 }
 
- th {
-    background-color: #3498db;
+
+th {
+    background-color: #34495e;
     color: white;
 }
 
- th,
+
+th,
 td {
-    border: 1px solid #b9dcf5;
+    border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
 }
 
- form {
-    width: 400px;
+
+tr:nth-child(even) {
+    background-color: #f8f8f8;
 }
 
- label {
+
+form {
+    max-width: 500px;
+    margin-bottom: 20px;
+}
+
+
+label {
     font-weight: bold;
 }
 
- input,
+
+input,
 select {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
     margin-bottom: 12px;
-    border: 1px solid #9acbea;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
 }
 
- button {
+
+button {
     padding: 10px 20px;
-    background-color: #3498db;
+    background-color: #2c3e50;
     color: white;
     border: none;
     cursor: pointer;
 }
 
- button:hover {
-    background-color: #217dbb;
+
+button:hover {
+    background-color: #1a252f;
 }
 
- a {
-    color: #2980b9;
+
+a {
+    color: #2c3e50;
 }
+
+
+form a {
+    margin-left: 10px;
+}
+
+
+input::placeholder {
+    color: #777;
+}
+
+
+.mensagem {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
 
 .sucesso {
     background-color: #d4edda;
@@ -110,3 +181,39 @@ select {
     color: #856404;
     border: 1px solid #ffeeba;
 }
+
+
+.painel {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+
+.card {
+    flex: 1;
+    background-color: #ecf0f1;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+}
+
+
+.card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+
+.card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+
+.atraso {
+    color: #c0392b;
+    font-weight: bold;
+}
+
