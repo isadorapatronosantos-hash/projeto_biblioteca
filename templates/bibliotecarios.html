@@ -8,7 +8,9 @@
 
 
 <p>
-    <a href="/bibliotecarios/novo">Cadastrar novo bibliotecário</a>
+    {% if session.perfil in ['admin', 'bibliotecario'] %}
+        <a href="/bibliotecarios/novo">Cadastrar novo bibliotecário</a>
+    {% endif %}
 </p>
 
 
@@ -18,7 +20,9 @@
             <th>ID</th>
             <th>Nome</th>
             <th>E-mail</th>
-            <th>Ações</th>
+            {% if session.perfil in ['admin', 'bibliotecario'] %}
+                <th>Ações</th>
+            {% endif %}
         </tr>
     </thead>
 
@@ -29,6 +33,7 @@
             <td>{{ bibliotecario.id_bibliotecario }}</td>
             <td>{{ bibliotecario.nome }}</td>
             <td>{{ bibliotecario.email }}</td>
+            {% if session.perfil in ['admin', 'bibliotecario'] %}
             <td>
                 <a href="/bibliotecarios/editar/{{ bibliotecario.id_bibliotecario }}">Editar</a>
 
@@ -41,6 +46,7 @@
                     Excluir
                 </a>
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
@@ -48,3 +54,4 @@
 
 
 {% endblock %}
+

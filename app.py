@@ -745,12 +745,12 @@ def autenticar():
         cursor = conexao.cursor(dictionary=True)
 
 
-        sql = """
+        sql =  sql = """
             SELECT *
             FROM usuario
             WHERE email = %s
-              AND senha = %s
-              AND status = 'Ativo'
+            AND senha = %s
+            AND status = 'Ativo'
         """
 
 

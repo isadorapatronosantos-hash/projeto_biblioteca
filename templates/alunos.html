@@ -6,6 +6,16 @@
 
 <h2>Alunos Cadastrados</h2>
 
+{% if session.perfil in ['admin', 'bibliotecario'] %}
+<p>
+    <a href="/alunos/novo">Cadastrar novo aluno</a>
+</p>
+{% endif %}
+
+
+{% if session.perfil not in ['aluno', 'professor'] %}
+
+
 
 <p>
     <a href="/alunos/novo">Cadastrar novo aluno</a>
@@ -36,6 +46,9 @@
             <th>Turma</th>
             <th>Telefone</th>
             <th>Ações</th>
+            {% if session.perfil in ['admin', 'bibliotecario'] %}
+            <th>Ações</th>
+        {% endif %}
         </tr>
     </thead>
 
@@ -50,9 +63,21 @@
             <td>{{ aluno.telefone }}</td>
             <td>
                 <a href="/alunos/editar/{{ aluno.id_aluno }}">Editar</a>
+                {% if session.perfil in ['admin', 'bibliotecario'] %}
+            <td>
+                <a href="/alunos/editar/{{ aluno.id_aluno }}">Editar</a>
 
 
                 |
+
+
+                <a href="/alunos/excluir/{{ aluno.id_aluno }}"
+                   onclick="return confirm('Deseja realmente excluir este aluno?')">
+                    Excluir
+                </a>
+            </td>
+            {% endif %}
+
 
 
                 <a href="/alunos/excluir/{{ aluno.id_aluno }}"

@@ -5,6 +5,7 @@ USE biblioteca_2ano;
 
 
 
+
 -- Criando usuário
 CREATE USER 'biblioteca_user2'@'localhost'
 IDENTIFIED BY 'projeto2';
@@ -195,7 +196,6 @@ WHERE id_livro IN (3, 4, 5);
 
 
 
-
 INSERT INTO usuario
 (nome, email, senha, perfil, status, id_aluno, id_professor, id_bibliotecario)
 VALUES
@@ -203,10 +203,13 @@ VALUES
 ('Bruno Henrique Souza', 'bruno@biblioteca.com', 'senha123', 'Aluno', 'Ativo', 2, 2, 2),
 ('Carolina Mendes', 'carolina@biblioteca.com', 'senha123', 'Aluno', 'Ativo', 3, 3, 3),
 ('Daniel Oliveira', 'daniel@biblioteca.com', 'senha123', 'Aluno', 'Ativo', 4, 4, 4),
-('Administrador', 'admin@escola.com', '123', 'admin', 'Ativo',6,6,6),
+('Administrador', 'admin@escola.com', '123', 'admin', 'Ativo',null,null,null),
 ('Eduarda Santos', 'eduarda@biblioteca.com', 'senha123', 'Aluno', 'Ativo', 5, 5, 5);
-
-
+    
+delete from usuario;
+INSERT INTO usuario
+(nome, email, senha, perfil, status, id_aluno, id_professor, id_bibliotecario)
+VALUES('Administrador', 'admin@escola.com', '123', 'admin', 'Ativo',null,null,null);
 
 
 SELECT * FROM aluno;
@@ -216,41 +219,19 @@ SELECT * FROM bibliotecario;
 SELECT * FROM emprestimo;
 SELECT * FROM usuario;					
 
-ALTER TABLE aluno
-ADD COLUMN id_usuario INT;
-
-
-ALTER TABLE aluno
-ADD CONSTRAINT fk_aluno_usuario
-FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
-
-
-ALTER TABLE bibliotecario
-ADD COLUMN id_usuario INT;
-
-
-ALTER TABLE bibliotecario
-ADD CONSTRAINT fk_bibliotecario_usuario
-FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
-
 
 UPDATE bibliotecario
 SET id_usuario = 2
-WHERE id_bibliotecario = 1;
+WHERE id_bibliotecario = 2;
 
 
 UPDATE aluno
 SET id_usuario = 3
 WHERE id_aluno = 1;
 
-DELETE FROM emprestimo;
-DELETE FROM aluno;
-DELETE FROM livro;
-DELETE FROM bibliotecario;
+ALTER TABLE aluno
+ADD COLUMN id_usuario INT;
 
-
-ALTER TABLE emprestimo AUTO_INCREMENT = 1;
-ALTER TABLE aluno AUTO_INCREMENT = 1;
-ALTER TABLE livro AUTO_INCREMENT = 1;
-ALTER TABLE bibliotecario AUTO_INCREMENT = 1;
-
+ALTER TABLE aluno
+ADD CONSTRAINT fk_aluno_usuario
+FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
