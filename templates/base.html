@@ -15,11 +15,17 @@
 
 
     <header>
+        
         <div class="topo">
             <h1>Sistema Biblioteca Escolar</h1>
             <p>Projeto Integrador - 1º Ano</p>
-        </div>
 
+
+            {% if session.nome %}
+                <p>Usuário logado: {{ session.nome }} | Perfil: {{ session.perfil }}</p>
+            {% endif %}
+        </div>
+        
 
         <nav>
             <a href="/">Início</a>
@@ -28,6 +34,7 @@
             <a href="/bibliotecarios">Bibliotecários</a>
             <a href="/emprestimos">Empréstimos</a>
             <a href="/emprestimos/atrasados">Atrasados</a>
+            <a href="/logout">Sair</a>
         </nav>
     </header>
 

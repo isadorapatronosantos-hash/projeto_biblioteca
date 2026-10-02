@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 import mysql.connector
 from config import DB_CONFIG
 from datetime import datetime
@@ -13,8 +13,55 @@ def conectar():
 
 
 @app.route("/")
-def index():
-    return render_template("index.html")
+def index():   
+    if "id_usuario" not in session:
+            return redirect("/login")     
+
+    try:
+
+        conexao = conectar()
+        cursor = conexao.cursor(dictionary=True)
+
+
+        cursor.execute("SELECT COUNT(*) AS total FROM aluno")
+        total_alunos = cursor.fetchone()["total"]
+
+
+        cursor.execute("SELECT COUNT(*) AS total FROM livro")
+        total_livros = cursor.fetchone()["total"]
+
+
+        cursor.execute("SELECT COUNT(*) AS total FROM livro WHERE status = 'Disponível'")
+        total_disponiveis = cursor.fetchone()["total"]
+
+
+        cursor.execute("SELECT COUNT(*) AS total FROM emprestimo WHERE status = 'Emprestado'")
+        total_emprestimos = cursor.fetchone()["total"]
+
+
+        cursor.close()
+        conexao.close()
+
+
+        return render_template(
+            "index.html",
+            total_alunos=total_alunos,
+            total_livros=total_livros,
+            total_disponiveis=total_disponiveis,
+            total_emprestimos=total_emprestimos
+        )
+
+
+    except Exception as erro:
+        flash(f"Erro ao carregar página inicial: {erro}", "erro")
+        return render_template(
+            "index.html",
+            total_alunos=0,
+            total_livros=0,
+            total_disponiveis=0,
+            total_emprestimos=0
+        )        
+
 
 
 # =========================
@@ -678,6 +725,68 @@ def listar_emprestimos_atrasados():
     except Exception as erro:
         flash(f"Erro ao listar empréstimos atrasados: {erro}", "erro")
         return redirect("/emprestimos")
+
+## Rota de Login
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+
+
+@app.route("/login/autenticar", methods=["POST"])
+def autenticar():
+    email = request.form["email"]
+    senha = request.form["senha"]
+
+
+    try:
+        conexao = conectar()
+        cursor = conexao.cursor(dictionary=True)
+
+
+        sql = """
+            SELECT *
+            FROM usuario
+            WHERE email = %s
+              AND senha = %s
+              AND status = 'Ativo'
+        """
+
+
+        cursor.execute(sql, (email, senha))
+        usuario = cursor.fetchone()
+
+
+        cursor.close()
+        conexao.close()
+
+
+        if usuario:
+            session["id_usuario"] = usuario["id_usuario"]
+            session["nome"] = usuario["nome"]
+            session["perfil"] = usuario["perfil"]
+
+
+            flash("Login realizado com sucesso!", "sucesso")
+            return redirect("/")
+        else:
+            flash("E-mail ou senha inválidos.", "erro")
+            return redirect("/login")
+
+
+    except Exception as erro:
+        flash(f"Erro ao realizar login: {erro}", "erro")
+        return redirect("/login")
+
+
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("Você saiu do sistema.", "sucesso")
+    return redirect("/login")
 
 
 if __name__ == "__main__":
